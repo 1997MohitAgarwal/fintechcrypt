@@ -11,7 +11,7 @@ export const fetchCryptoList = async () => {
     if (!response.ok) throw new Error("Too many request. Please try after some time.");
     return response.json();
   } catch (error) {
-    toast.error(error.message);  // Display error message as a toast
+    toast.error(error.message);  
     return [];
   }
 };
@@ -23,7 +23,7 @@ export const fetchCoinDetails = async (id) => {
     return response.json();
   } catch (error) {
     console.error(error.message);
-    toast.error(error.message);  // Display error message as a toast
+    toast.error(error.message); 
     return null;
   }
 };
@@ -37,7 +37,7 @@ export const fetchPriceHistory = async (id, days) => {
     return response.json();
   } catch (error) {
     console.error(error.message);
-    toast.error(error.message);  // Display error message as a toast
+    toast.error(error.message); 
     return null;
   }
 };
