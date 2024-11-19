@@ -8,7 +8,7 @@ export const fetchCryptoList = async () => {
     const response = await fetch(
       `https://cors-anywhere.herokuapp.com/${BASE_URL}/coins/markets?vs_currency=usd&x_cg_demo_api_KEY=${API_KEY}`
     );
-    if (!response.ok) throw new Error("Too many request. Please try after some time.");
+    if (!response.ok) throw new Error("Too many request. Please try after 2 minutes.");
     return response.json();
   } catch (error) {
     toast.error(error.message);  
@@ -19,7 +19,7 @@ export const fetchCryptoList = async () => {
 export const fetchCoinDetails = async (id) => {
   try {
     const response = await fetch(`https://cors-anywhere.herokuapp.com/${BASE_URL}/coins/${id}?x_cg_demo_api_KEY=${API_KEY}`);
-    if (!response.ok) throw new Error("Failed to fetch coin details. Too many Request. Please try after some time.");
+    if (!response.ok) throw new Error("Failed to fetch coin details. Too many Request. Please try after 2 minutes.");
     return response.json();
   } catch (error) {
     console.error(error.message);
@@ -33,7 +33,7 @@ export const fetchPriceHistory = async (id, days) => {
     const response = await fetch(
       `https://cors-anywhere.herokuapp.com/${BASE_URL}/coins/${id}/market_chart?vs_currency=usd&days=${days}&x_cg_demo_api_KEY=${API_KEY}`
     );
-    if (!response.ok) throw new Error("Failed to fetch price history. Too many Request. Please try after some time.");
+    if (!response.ok) throw new Error("Failed to fetch price history. Too many Request. Please try after 2 minutes.");
     return response.json();
   } catch (error) {
     console.error(error.message);
