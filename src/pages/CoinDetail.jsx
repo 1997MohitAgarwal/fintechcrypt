@@ -164,7 +164,7 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
             },
             {
               title: "24h Price Change",
-              value: `${coin?.market_data?.price_change_24h?.toFixed(2)} (${coin?.market_data?.price_change_percentage_24h?.toFixed(2)}%)`,
+              value: coin?.market_data?`${coin?.market_data?.price_change_24h?.toFixed(2)} (${coin?.market_data?.price_change_percentage_24h?.toFixed(2)}%)`:"N/A",
             },
           ].map((item, index) => (
             <div
