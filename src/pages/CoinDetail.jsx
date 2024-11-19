@@ -206,9 +206,9 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
       </div>
 
       {/* Price History Chart */}
-      <div className="mt-8 flex py-3 mb-12 bg-gray-800 rounded-lg mx-4 sm:mx-8">
+      {priceHistory.length>0 && <div className="mt-8 flex py-3 mb-12 bg-gray-800 rounded-lg mx-4 sm:mx-8">
         <PriceHistoryChart data={priceHistory} isDarkMode={isDarkMode} />
-      </div>
+      </div>}
     </div>
   );
 };
