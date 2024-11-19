@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import PriceHistoryChart from "../components/PriceHistoryChart";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
   const { id } = useParams();
