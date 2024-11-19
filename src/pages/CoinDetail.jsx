@@ -43,7 +43,7 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
   }, [id, timeframe]);
 
   if (!coin) return <div className="text-center text-gray-300">
-    <Spinner/>
+    <Spinner height="min-h-screen"/>
   </div>;
 
   return (

@@ -1,9 +1,9 @@
 import React from 'react';
 import { ClipLoader } from 'react-spinners';
 
-const Spinner = () => {
+const Spinner = ({height}) => {
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className={`flex justify-center items-center ${height}`}>
       <ClipLoader color="#ff6347" size={100} />
     </div>
   );
