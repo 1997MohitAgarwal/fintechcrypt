@@ -53,7 +53,7 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
     );
 
   // Show error message if no data is found
-  if (coin && coin.length === 0)
+  if (coin && coin?.length === 0)
     return (
       <div className="font-semibold text-lg text-gray-600">
         No Data Found
@@ -91,8 +91,8 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
         <div className="flex items-center justify-center space-x-12">
           <div>
             <img
-              src={coin.image?.large}
-              alt={coin.name}
+              src={coin?.image?.large}
+              alt={coin?.name}
               className={`border-4  ${
                 isDarkMode ? "border-white" : "border-gray-600"
               } border-rounded rounded-xl shadow-lg p-2`}
@@ -100,21 +100,21 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
           </div>
           <div>
             <h1 className="text-xl sm:text-xl md:text-4xl font-extrabold text-orange-500 mb-2">
-              {coin.name}
+              {coin?.name}
             </h1>
             <p
               className={`${
                 isDarkMode ? "text-gray-300" : "text-gray-800"
               } text-md`}
             >
-              {coin.symbol.toUpperCase()} - {coin.name}
+              {coin?.symbol.toUpperCase()} - {coin?.name}
             </p>
             <p
               className={`${
                 isDarkMode ? "text-gray-400" : "text-gray-600"
               } text-lg max-w-2xl mx-auto mt-2`}
             >
-              {coin.description?.en.split(".")[0]}
+              {coin?.description?.en.split(".")[0]}
             </p>
           </div>
         </div>
@@ -130,41 +130,41 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
           {[
             {
               title: "Market Cap",
-              value: coin.market_data?.market_cap?.usd,
+              value: coin?.market_data?.market_cap?.usd,
             },
             {
               title: "Current Price",
-              value: coin.market_data?.current_price?.usd,
+              value: coin?.market_data?.current_price?.usd,
             },
             {
               title: "Total Volume",
-              value: coin.market_data?.total_volume?.usd,
+              value: coin?.market_data?.total_volume?.usd,
             },
             {
               title: "ATH",
-              value: coin.market_data?.ath?.usd,
+              value: coin?.market_data?.ath?.usd,
             },
             {
               title: "ATL",
-              value: coin.market_data?.atl?.usd,
+              value: coin?.market_data?.atl?.usd,
             },
             {
               title: "ROI",
-              value: coin.market_data?.roi?.percentage
-                ? `${coin.market_data.roi.percentage.toFixed(2)}%`
+              value: coin?.market_data?.roi?.percentage
+                ? `${coin?.market_data.roi.percentage.toFixed(2)}%`
                 : "N/A",
             },
             {
               title: "High 24h",
-              value: coin.market_data?.high_24h?.usd,
+              value: coin?.market_data?.high_24h?.usd,
             },
             {
               title: "Low 24h",
-              value: coin.market_data?.low_24h?.usd,
+              value: coin?.market_data?.low_24h?.usd,
             },
             {
               title: "24h Price Change",
-              value: `${coin.market_data?.price_change_24h?.toFixed(2)} (${coin.market_data?.price_change_percentage_24h?.toFixed(2)}%)`,
+              value: `${coin?.market_data?.price_change_24h?.toFixed(2)} (${coin?.market_data?.price_change_percentage_24h?.toFixed(2)}%)`,
             },
           ].map((item, index) => (
             <div
