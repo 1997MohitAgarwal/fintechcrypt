@@ -184,7 +184,7 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
       </div>
 
       {/* Timeframe Selector */}
-      <div className="mt-6 text-center">
+      {priceHistory.length>0 && <div className="mt-6 text-center">
         <label
           htmlFor="timeframe"
           className="text-lg text-orange-700 font-semibold"
@@ -203,7 +203,7 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
           <option value="90">3 Months</option>
           <option value="365">1 Year</option>
         </select>
-      </div>
+      </div>}
 
       {/* Price History Chart */}
       {priceHistory.length>0 && <div className="mt-8 flex py-3 mb-12 bg-gray-800 rounded-lg mx-4 sm:mx-8">
