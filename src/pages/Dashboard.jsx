@@ -116,7 +116,7 @@ const Dashboard = ({ isDarkMode, setIsDarkMode }) => {
 
       {/* Filters Section */}
       <div
-        className={`p-6 mt-6 flex flex-wrap gap-3 justify-between items-center ${
+        className={`p-6 flex flex-wrap gap-3 justify-between items-center ${
           isDarkMode ? "bg-gray-950 text-gray-200" : "text-gray-900"
         }`}
       >
@@ -165,7 +165,7 @@ const Dashboard = ({ isDarkMode, setIsDarkMode }) => {
 
       {/* Crypto List Section */}
       {loading ? (
-        <div>
+        <div className="mt-8">
           <Spinner />
         </div> 
       ) : currentPageData?.length > 0 ? (
