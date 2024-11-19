@@ -80,7 +80,7 @@ const PriceHistoryChart = ({ data, isDarkMode }) => {
 
   return (
     <div
-      className={`p-3 w-screen rounded-lg mx-4 sm:mx-8 ${
+      className={`w-screen rounded-lg mx-4 sm:mx-8 ${
         isDarkMode ? "bg-gray-800" : "bg-white"
       }`} // Container background color based on dark mode
     >

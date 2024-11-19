@@ -9,7 +9,7 @@ const Navbar = ({ isDarkMode,setIsDarkMode }) => {
         setIsDarkMode((prev) => !prev);
       };
   return (
-    <nav className={`p-4 shadow-md ${isDarkMode ? "bg-gray-900 text-gray-200" : "bg-gray-800 text-white"}`}>
+    <nav className={`p-4 shadow-md ${isDarkMode ? "bg-gray-950 text-gray-200" : "bg-gray-500 text-white"}`}>
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo with Icon and App Name */}
         <NavLink to="/" className="flex items-center text-2xl font-semibold">
@@ -28,7 +28,7 @@ const Navbar = ({ isDarkMode,setIsDarkMode }) => {
           {isDarkMode ? (
             <FaSun className="text-yellow-500" />
           ) : (
-            <FaMoon className="text-gray-500" />
+            <FaMoon className="text-gray-800" />
           )}
         </button>
       </div>

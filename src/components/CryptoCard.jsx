@@ -5,7 +5,7 @@ const CryptoCard = ({ crypto, isDarkMode }) => {
   return (
     <Link
       to={`/coin/${crypto.id}`}
-      className={`block p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out ${
+      className={`block p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300 ease-in-out ${
         isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
       }`}
     >
@@ -17,7 +17,7 @@ const CryptoCard = ({ crypto, isDarkMode }) => {
         />
         <div>
           <h2
-            className={`text-2xl font-bold ${
+            className={`text-xl font-bold ${
               isDarkMode ? "text-white" : "text-gray-900"
             }`}
           >

@@ -4,11 +4,13 @@ import CryptoCard from "../components/CryptoCard";
 import Navbar from "../components/Navbar";
 import cryptoBanner from "../assets/crypto.jpg"; // Add your image path here.
 
-const Dashboard = ({ isDarkMode,setIsDarkMode }) => {
+const Dashboard = ({ isDarkMode, setIsDarkMode }) => {
   const [cryptos, setCryptos] = useState([]); // All data
   const [filteredCryptos, setFilteredCryptos] = useState([]); // Filtered data
   const [marketCapFilter, setMarketCapFilter] = useState("all");
   const [priceChangeFilter, setPriceChangeFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState(""); // Search query
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(""); // Debounced search query
   const [page, setPage] = useState(1);
   const itemsPerPage = 12; // Number of items per page
 
@@ -26,12 +28,22 @@ const Dashboard = ({ isDarkMode,setIsDarkMode }) => {
     loadCryptos();
   }, []);
 
-  // Apply filters based on market cap and price change
+  // Apply debouncing for the search query
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 800); // Adjust debounce delay (in milliseconds) as needed
+
+    return () => clearTimeout(timer); // Clear timer on cleanup
+  }, [searchQuery]);
+
+  // Apply filters based on market cap, price change, and debounced search query
+  useEffect(() => {
+    setPage(1)
     let filteredData = cryptos;
 
     if (marketCapFilter !== "all") {
-      filteredData = filteredData.filter(crypto => {
+      filteredData = filteredData.filter((crypto) => {
         if (marketCapFilter === "high") {
           return crypto.market_cap > 10000000000; // Example threshold for high market cap
         } else if (marketCapFilter === "low") {
@@ -42,7 +54,7 @@ const Dashboard = ({ isDarkMode,setIsDarkMode }) => {
     }
 
     if (priceChangeFilter !== "all") {
-      filteredData = filteredData.filter(crypto => {
+      filteredData = filteredData.filter((crypto) => {
         if (priceChangeFilter === "positive") {
           return crypto.price_change_percentage_24h > 0;
         } else if (priceChangeFilter === "negative") {
@@ -52,8 +64,20 @@ const Dashboard = ({ isDarkMode,setIsDarkMode }) => {
       });
     }
 
+    if (debouncedSearchQuery) {
+      filteredData = filteredData.filter(
+        (crypto) =>
+          crypto.name
+            .toLowerCase()
+            .includes(debouncedSearchQuery.toLowerCase()) ||
+          crypto.symbol
+            .toLowerCase()
+            .includes(debouncedSearchQuery.toLowerCase())
+      );
+    }
+
     setFilteredCryptos(filteredData); // Update filtered data
-  }, [cryptos, marketCapFilter, priceChangeFilter]);
+  }, [cryptos, marketCapFilter, priceChangeFilter, debouncedSearchQuery]);
 
   // Slice data based on page and itemsPerPage
   const currentPageData = filteredCryptos.slice(
@@ -62,72 +86,91 @@ const Dashboard = ({ isDarkMode,setIsDarkMode }) => {
   );
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? "bg-gray-900 text-gray-200" : "bg-gray-100 text-gray-900"}`}>
+    <div
+      className={`min-h-screen ${
+        isDarkMode ? "bg-gray-900 text-gray-200" : "bg-gray-100 text-gray-900"
+      }`}
+    >
       {/* Navbar */}
       <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
 
       {/* Hero Section */}
       <div className="relative text-center py-16 bg-gradient-to-r from-gray-800 to-gray-900">
-        {/* Background Image */}
         <img
           src={cryptoBanner}
           alt="Crypto Symbols"
           className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
         />
-
         <div className="relative z-10">
           <h1 className="text-5xl font-bold text-orange-500 mb-4">
             Welcome to CryptoTracker
           </h1>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            Track real-time data of your favorite cryptocurrencies. Stay informed with live updates, detailed coin information, and market trends.
+          <p className="text-lg px-2 text-gray-300 max-w-2xl mx-auto">
+            Track real-time data of your favorite cryptocurrencies. Stay
+            informed with live updates, detailed coin information, and market
+            trends.
           </p>
         </div>
       </div>
 
       {/* Filters Section */}
-      <div className="p-6 flex justify-between items-center bg-gray-800">
-        {/* Market Cap Filter */}
-        <div>
-          <label htmlFor="marketCap" className="text-orange-500 mr-2">Market Cap</label>
-          <select
-            id="marketCap"
-            className="bg-gray-700 text-gray-300 p-2 rounded-md"
-            value={marketCapFilter}
-            onChange={(e) => setMarketCapFilter(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="high">High Market Cap</option>
-            <option value="low">Low Market Cap</option>
-          </select>
+      <div
+        className={`p-6 mt-6 flex flex-wrap gap-3 justify-between items-center ${
+          isDarkMode ? "bg-gray-950 text-gray-200" : "text-gray-900"
+        }`}
+      >
+        {/* Search Bar */}
+        <div className="flex-grow">
+          <input
+            type="text"
+            placeholder="Search by name or symbol"
+            className="bg-gray-700 text-gray-300 p-3 rounded-md border border-gray-600 focus:ring-2 focus:ring-orange-500 focus:outline-none w-full max-w-sm"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
 
-        {/* Price Change Filter */}
-        <div>
-          <label htmlFor="priceChange" className="text-orange-500 mr-2">Price Change (24h)</label>
-          <select
-            id="priceChange"
-            className="bg-gray-700 text-gray-300 p-2 rounded-md"
-            value={priceChangeFilter}
-            onChange={(e) => setPriceChangeFilter(e.target.value)}
-          >
-            <option value="all">All</option>
-            <option value="positive">Positive</option>
-            <option value="negative">Negative</option>
-          </select>
+        {/* Filters */}
+        <div className="flex gap-3 flex-wrap">
+          {/* Market Cap Filter */}
+          <div>
+            <select
+              id="marketCap"
+              className="bg-gray-700 text-gray-300 p-3 rounded-md border border-gray-600 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+              value={marketCapFilter}
+              onChange={(e) => setMarketCapFilter(e.target.value)}
+            >
+              <option value="all">All (Market Cap)</option>
+              <option value="high">High Market Cap</option>
+              <option value="low">Low Market Cap</option>
+            </select>
+          </div>
+
+          {/* Price Change Filter */}
+          <div>
+            <select
+              id="priceChange"
+              className="bg-gray-700 text-gray-300 p-3 rounded-md border border-gray-600 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+              value={priceChangeFilter}
+              onChange={(e) => setPriceChangeFilter(e.target.value)}
+            >
+              <option value="all">All (PriceChange)</option>
+              <option value="positive">Positive</option>
+              <option value="negative">Negative</option>
+            </select>
+          </div>
         </div>
       </div>
 
       {/* Crypto List Section */}
-      <div className="p-6">
-        <h2 className="text-3xl font-bold text-center text-orange-500 mb-8">
-          Cryptocurrency List
-        </h2>
-
-        {/* Grid for Crypto Cards */}
+      <div className="pb-6 px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {currentPageData.map((crypto) => (
-            <CryptoCard key={crypto.id} crypto={crypto} isDarkMode={isDarkMode} />
+            <CryptoCard
+              key={crypto.id}
+              crypto={crypto}
+              isDarkMode={isDarkMode}
+            />
           ))}
         </div>
 

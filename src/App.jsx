@@ -11,7 +11,7 @@ const App = () => {
       <div className={`min-h-screen ${isDarkMode ? "bg-gray-900 text-gray-200" : "bg-gray-100 text-gray-900"}`}>
         <Routes>
           <Route path="/" element={<Dashboard isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
-          <Route path="/coin/:id" element={<CoinDetail isDarkMode={isDarkMode} />} />
+          <Route path="/coin/:id" element={<CoinDetail isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
         </Routes>
       </div>
     </Router>
