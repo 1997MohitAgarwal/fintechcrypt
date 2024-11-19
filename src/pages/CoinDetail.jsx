@@ -19,6 +19,7 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
       setLoading(true); // Start spinner before API call
       try {
         const data = await fetchCoinDetails(id);
+        console.log(data)
         setCoin(data);
       } catch (err) {
         setCoin([]); // Handle error by setting coin to an empty array
@@ -149,10 +150,8 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
               value: coin?.market_data?.atl?.usd,
             },
             {
-              title: "ROI",
-              value: coin?.market_data?.roi?.percentage
-                ? `${coin?.market_data.roi.percentage.toFixed(2)}%`
-                : "N/A",
+              title: "Market Cap Rank",
+              value: coin?.market_data?.market_cap_rank,
             },
             {
               title: "High 24h",
@@ -177,7 +176,7 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
                 {item.title}
               </h3>
               <p className="text-2xl font-bold text-gray-300">
-                {item.value ? `$${item.value.toLocaleString()}` : "N/A"}
+                {item.value ? `${item.value.toLocaleString()}` : "N/A"}
               </p>
             </div>
           ))}
