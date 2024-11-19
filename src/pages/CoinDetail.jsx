@@ -60,15 +60,14 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
       >
         {/* Image and Text in Flex Row */}
         <div className="p-4">
-          <button
-            onClick={() => navigate("/")} // Replace with the correct route
+          <Link to="/"
             className={`flex items-center space-x-2 ${
               isDarkMode ? "text-gray-200" : "text-gray-600"
             } hover:text-orange-500 text-lg font-semibold`}
           >
             <FaArrowLeft />
             <span>Dashboard</span>
-          </button>
+          </Link>
         </div>
         <div className="flex items-center justify-center space-x-12">
           {/* Coin Image */}
