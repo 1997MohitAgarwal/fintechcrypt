@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { fetchCoinDetails, fetchPriceHistory } from "../services/api";
 import Navbar from "../components/Navbar";
+import Spinner from "../components/Spinner";
 import PriceHistoryChart from "../components/PriceHistoryChart";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -41,7 +42,9 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
     loadPriceHistory();
   }, [id, timeframe]);
 
-  if (!coin) return <div className="text-center text-gray-300">Loading...</div>;
+  if (!coin) return <div className="text-center text-gray-300">
+    <Spinner/>
+  </div>;
 
   return (
     <div
@@ -59,7 +62,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
             : "bg-gradient-to-r from-white to-gray-200"
         } p-6`}
       >
-        {/* Image and Text in Flex Row */}
         <div className="p-4">
           <Link to="/"
             className={`flex items-center space-x-2 ${
@@ -71,7 +73,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
           </Link>
         </div>
         <div className="flex items-center justify-center space-x-12">
-          {/* Coin Image */}
           <div>
             <img
               src={coin.image?.large}
@@ -106,14 +107,12 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
         </div>
       </div>
 
-      {/* Coin Info Section */}
       <div
         className={`${
           isDarkMode ? "bg-gray-800" : "bg-gray-100"
         } p-6 mt-6 rounded-lg shadow-md mx-4 sm:mx-8`}
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Market Cap */}
           <div
             className={`${
               isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
@@ -127,7 +126,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
             </p>
           </div>
 
-          {/* Current Price */}
           <div
             className={`${
               isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
@@ -141,7 +139,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
             </p>
           </div>
 
-          {/* Total Volume */}
           <div
             className={`${
               isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
@@ -155,7 +152,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
             </p>
           </div>
 
-          {/* ATH (All-Time High) */}
           <div
             className={`${
               isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
@@ -167,7 +163,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
             </p>
           </div>
 
-          {/* ATL (All-Time Low) */}
           <div
             className={`${
               isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
@@ -179,7 +174,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
             </p>
           </div>
 
-          {/* Circulating Supply */}
           <div
             className={`${
               isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
@@ -193,7 +187,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
             </p>
           </div>
 
-          {/* High 24h */}
           <div
             className={`${
               isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
@@ -205,7 +198,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
             </p>
           </div>
 
-          {/* Low 24h */}
           <div
             className={`${
               isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
@@ -217,7 +209,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
             </p>
           </div>
 
-          {/* 24h Price Change */}
           <div
             className={`${
               isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
