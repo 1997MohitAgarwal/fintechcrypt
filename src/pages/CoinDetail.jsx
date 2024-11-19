@@ -5,24 +5,26 @@ import Navbar from "../components/Navbar";
 import Spinner from "../components/Spinner";
 import PriceHistoryChart from "../components/PriceHistoryChart";
 import { FaArrowLeft } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [coin, setCoin] = useState(null);
   const [priceHistory, setPriceHistory] = useState([]);
   const [timeframe, setTimeframe] = useState("7");
+  const [loading, setLoading] = useState(true); // New loading state
 
   useEffect(() => {
     const loadCoinDetails = async () => {
+      setLoading(true); // Start spinner before API call
       try {
         const data = await fetchCoinDetails(id);
-        console.log(data, "coin data");
         setCoin(data);
       } catch (err) {
-        console.error(err.message);
+        setCoin([]); // Handle error by setting coin to an empty array
+        console.error("Error fetching coin details:", err.message);
+      } finally {
+        setLoading(false); // Stop spinner after API call
       }
     };
 
@@ -35,16 +37,28 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
         const data = await fetchPriceHistory(id, timeframe);
         setPriceHistory(data.prices);
       } catch (err) {
-        console.error(err.message);
+        console.error("Error fetching price history:", err.message);
       }
     };
 
     loadPriceHistory();
   }, [id, timeframe]);
 
-  if (!coin) return <div className="text-center text-gray-300">
-    <Spinner height="min-h-screen"/>
-  </div>;
+  // Show spinner while loading
+  if (loading)
+    return (
+      <div className="text-center text-gray-300">
+        <Spinner height="min-h-screen" />
+      </div>
+    );
+
+  // Show error message if no data is found
+  if (coin && coin.length === 0)
+    return (
+      <div className="font-semibold text-lg text-gray-600">
+        No Data Found
+      </div>
+    );
 
   return (
     <div
@@ -54,6 +68,7 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
     >
       {/* Navbar */}
       <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+
       {/* Coin Detail Header */}
       <div
         className={`${
@@ -63,7 +78,8 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
         } p-6`}
       >
         <div className="p-4">
-          <Link to="/"
+          <Link
+            to="/"
             className={`flex items-center space-x-2 ${
               isDarkMode ? "text-gray-200" : "text-gray-600"
             } hover:text-orange-500 text-lg font-semibold`}
@@ -82,13 +98,10 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
               } border-rounded rounded-xl shadow-lg p-2`}
             />
           </div>
-
-          {/* Coin Text Info */}
           <div>
             <h1 className="text-xl sm:text-xl md:text-4xl font-extrabold text-orange-500 mb-2">
               {coin.name}
             </h1>
-
             <p
               className={`${
                 isDarkMode ? "text-gray-300" : "text-gray-800"
@@ -107,121 +120,67 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
         </div>
       </div>
 
+      {/* Statistics Section */}
       <div
         className={`${
           isDarkMode ? "bg-gray-800" : "bg-gray-100"
         } p-6 mt-6 rounded-lg shadow-md mx-4 sm:mx-8`}
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
-            } text-center p-4 rounded-lg`}
-          >
-            <h3 className="text-lg font-semibold text-orange-400">
-              Market Cap
-            </h3>
-            <p className="text-2xl font-bold text-gray-300">
-              ${coin.market_data?.market_cap?.usd?.toLocaleString() || "N/A"}
-            </p>
-          </div>
-
-          <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
-            } text-center p-4 rounded-lg`}
-          >
-            <h3 className="text-lg font-semibold text-orange-400">
-              Current Price
-            </h3>
-            <p className="text-2xl font-bold text-gray-300">
-              ${coin.market_data?.current_price?.usd?.toLocaleString() || "N/A"}
-            </p>
-          </div>
-
-          <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
-            } text-center p-4 rounded-lg`}
-          >
-            <h3 className="text-lg font-semibold text-orange-400">
-              Total Volume
-            </h3>
-            <p className="text-2xl font-bold text-gray-300">
-              ${coin.market_data?.total_volume?.usd?.toLocaleString() || "N/A"}
-            </p>
-          </div>
-
-          <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
-            } text-center p-4 rounded-lg`}
-          >
-            <h3 className="text-lg font-semibold text-orange-400">ATH</h3>
-            <p className="text-2xl font-bold text-gray-300">
-              ${coin.market_data?.ath?.usd?.toLocaleString() || "N/A"}
-            </p>
-          </div>
-
-          <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
-            } text-center p-4 rounded-lg`}
-          >
-            <h3 className="text-lg font-semibold text-orange-400">ATL</h3>
-            <p className="text-2xl font-bold text-gray-300">
-              ${coin.market_data?.atl?.usd?.toLocaleString() || "N/A"}
-            </p>
-          </div>
-
-          <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
-            } text-center p-4 rounded-lg`}
-          >
-            <h3 className="text-lg font-semibold text-orange-400">
-              Circulating Supply
-            </h3>
-            <p className="text-2xl font-bold text-gray-300">
-              {coin.market_data?.circulating_supply?.toLocaleString() || "N/A"}
-            </p>
-          </div>
-
-          <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
-            } text-center p-4 rounded-lg`}
-          >
-            <h3 className="text-lg font-semibold text-orange-400">High 24h</h3>
-            <p className="text-2xl font-bold text-gray-300">
-              ${coin.market_data?.high_24h?.usd?.toLocaleString() || "N/A"}
-            </p>
-          </div>
-
-          <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
-            } text-center p-4 rounded-lg`}
-          >
-            <h3 className="text-lg font-semibold text-orange-400">Low 24h</h3>
-            <p className="text-2xl font-bold text-gray-300">
-              ${coin.market_data?.low_24h?.usd?.toLocaleString() || "N/A"}
-            </p>
-          </div>
-
-          <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
-            } text-center p-4 rounded-lg`}
-          >
-            <h3 className="text-lg font-semibold text-orange-400">
-              24h Price Change
-            </h3>
-            <p className="text-2xl font-bold text-gray-300">
-              {coin.market_data?.price_change_24h?.toFixed(2)} (
-              {coin.market_data?.price_change_percentage_24h?.toFixed(2)}%)
-            </p>
-          </div>
+          {[
+            {
+              title: "Market Cap",
+              value: coin.market_data?.market_cap?.usd,
+            },
+            {
+              title: "Current Price",
+              value: coin.market_data?.current_price?.usd,
+            },
+            {
+              title: "Total Volume",
+              value: coin.market_data?.total_volume?.usd,
+            },
+            {
+              title: "ATH",
+              value: coin.market_data?.ath?.usd,
+            },
+            {
+              title: "ATL",
+              value: coin.market_data?.atl?.usd,
+            },
+            {
+              title: "ROI",
+              value: coin.market_data?.roi?.percentage
+                ? `${coin.market_data.roi.percentage.toFixed(2)}%`
+                : "N/A",
+            },
+            {
+              title: "High 24h",
+              value: coin.market_data?.high_24h?.usd,
+            },
+            {
+              title: "Low 24h",
+              value: coin.market_data?.low_24h?.usd,
+            },
+            {
+              title: "24h Price Change",
+              value: `${coin.market_data?.price_change_24h?.toFixed(2)} (${coin.market_data?.price_change_percentage_24h?.toFixed(2)}%)`,
+            },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className={`${
+                isDarkMode ? "bg-gray-700" : "bg-white border border-gray-300"
+              } text-center p-4 rounded-lg`}
+            >
+              <h3 className="text-lg font-semibold text-orange-400">
+                {item.title}
+              </h3>
+              <p className="text-2xl font-bold text-gray-300">
+                {item.value ? `$${item.value.toLocaleString()}` : "N/A"}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
 
