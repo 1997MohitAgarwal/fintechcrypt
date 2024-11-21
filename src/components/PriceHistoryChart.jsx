@@ -24,8 +24,8 @@ const PriceHistoryChart = ({ data, isDarkMode }) => {
         backgroundColor: "rgba(255, 165, 0, 0.1)", 
         borderWidth: 2, 
         pointBackgroundColor: "#FFA500", 
-        pointRadius: 4, 
-        pointHoverRadius: 6, 
+        pointRadius: 1, 
+        pointHoverRadius: 3, 
       },
     ],
   };
