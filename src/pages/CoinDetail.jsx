@@ -3,15 +3,12 @@ import { useParams } from "react-router-dom";
 import { fetchCoinDetails, fetchPriceHistory } from "../services/api";
 import Navbar from "../components/Navbar";
 import Spinner from "../components/Spinner";
-import PriceHistoryChart from "../components/PriceHistoryChart";
 import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
   const { id } = useParams();
   const [coin, setCoin] = useState(null);
-  const [priceHistory, setPriceHistory] = useState([]);
-  const [timeframe, setTimeframe] = useState("7");
   const [loading, setLoading] = useState(true); // New loading state
 
   useEffect(() => {
@@ -32,18 +29,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
     loadCoinDetails();
   }, [id]);
 
-  useEffect(() => {
-    const loadPriceHistory = async () => {
-      try {
-        const data = await fetchPriceHistory(id, timeframe);
-        setPriceHistory(data.prices);
-      } catch (err) {
-        console.error("Error fetching price history:", err.message);
-      }
-    };
-
-    loadPriceHistory();
-  }, [id, timeframe]);
 
   // Show spinner while loading
   if (loading)
@@ -182,33 +167,6 @@ const CoinDetail = ({ isDarkMode, setIsDarkMode }) => {
           ))}
         </div>
       </div>
-
-      {/* Timeframe Selector */}
-      {priceHistory.length>0 && <div className="mt-6 text-center">
-        <label
-          htmlFor="timeframe"
-          className="text-lg text-orange-700 font-semibold"
-        >
-          Select Timeframe:{" "}
-        </label>
-        <select
-          id="timeframe"
-          value={timeframe}
-          onChange={(e) => setTimeframe(e.target.value)}
-          className="ml-2 text-md p-2 rounded-lg border-2 border-gray-600 text-gray-300 bg-gray-800 focus:outline-none"
-        >
-          <option value="1">1 Day</option>
-          <option value="7">7 Days</option>
-          <option value="30">1 Month</option>
-          <option value="90">3 Months</option>
-          <option value="365">1 Year</option>
-        </select>
-      </div>}
-
-      {/* Price History Chart */}
-      {priceHistory.length>0 && <div className="mt-8 flex py-3 mb-12 bg-gray-800 rounded-lg mx-4 sm:mx-8">
-        <PriceHistoryChart data={priceHistory} isDarkMode={isDarkMode} />
-      </div>}
     </div>
   );
 };

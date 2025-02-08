@@ -6,7 +6,7 @@ const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY;
 export const fetchCryptoList = async () => {
   try {
     const response = await fetch(
-      `https://cors-anywhere.herokuapp.com/${BASE_URL}/coins/markets?vs_currency=usd&x_cg_demo_api_KEY=${API_KEY}`
+      `${BASE_URL}/coins/markets?vs_currency=usd&x_cg_demo_api_KEY=${API_KEY}`
     );
     if (!response.ok) throw new Error("Too many request. Please try after some time.");
     return response.json();
@@ -18,7 +18,7 @@ export const fetchCryptoList = async () => {
 
 export const fetchCoinDetails = async (id) => {
   try {
-    const response = await fetch(`https://cors-anywhere.herokuapp.com/${BASE_URL}/coins/${id}?x_cg_demo_api_KEY=${API_KEY}`);
+    const response = await fetch(`${BASE_URL}/coins/${id}?x_cg_demo_api_KEY=${API_KEY}`);
     if (!response.ok) throw new Error("Failed to fetch coin details. Too many Request. Please try after some time.");
     return response.json();
   } catch (error) {
@@ -31,7 +31,7 @@ export const fetchCoinDetails = async (id) => {
 export const fetchPriceHistory = async (id, days) => {
   try {
     const response = await fetch(
-      `https://cors-anywhere.herokuapp.com/${BASE_URL}/coins/${id}/market_chart?vs_currency=usd&days=${days}&x_cg_demo_api_KEY=${API_KEY}`
+      `${BASE_URL}/coins/${id}/market_chart?vs_currency=usd&days=${days}&x_cg_demo_api_KEY=${API_KEY}`
     );
     if (!response.ok) throw new Error("Failed to fetch price history. Too many Request. Please try after some time.");
     return response.json();
